@@ -20,7 +20,7 @@ const WifiJsonGenerator = () => {
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'wifi_data.json';
+    link.download = 'config.json';
     link.click();
 
     URL.revokeObjectURL(url);
@@ -39,7 +39,7 @@ const WifiJsonGenerator = () => {
             placeholder="Enter Wi-Fi Name"
             value={wifiName}
             onChange={(e) => setWifiName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
           />
         </div>
 
@@ -51,7 +51,7 @@ const WifiJsonGenerator = () => {
             placeholder="Enter Wi-Fi Password"
             value={wifiPassword}
             onChange={(e) => setWifiPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
           />
         </div>
 
