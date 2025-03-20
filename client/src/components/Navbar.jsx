@@ -14,6 +14,7 @@ function Navbar() {
     if (path === "/devices") return "Devices";
     if (path === "/logs") return "Security Logs";
     if (path === "/settings") return "Settings";
+    if (path === "/generate-json") return "JSON Generator";
     return "ESP32 Security Dashboard"; // Default title
   };
 
