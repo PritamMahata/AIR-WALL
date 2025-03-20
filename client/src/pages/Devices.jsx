@@ -7,7 +7,7 @@ const devicesList = [
   { id: 3, name: "ESP32-Security", status: "Online", ip: "192.168.1.14" },
 ];
 
-const Devices = () => {
+function Devices(){
   const [devices, setDevices] = useState(devicesList);
 
   return (

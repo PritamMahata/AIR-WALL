@@ -3,7 +3,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { Sun, Moon } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-const Navbar = () => {
+function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
 

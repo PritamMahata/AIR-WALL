@@ -1,7 +1,7 @@
 import React from "react";
 import { FiWifi, FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 
-const Dashboard = () => {
+function Dashboard() {
   return (
     <div className="p-6 w-304">
       {/* Dashboard Header */}
