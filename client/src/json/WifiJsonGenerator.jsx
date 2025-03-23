@@ -27,7 +27,7 @@ const WifiJsonGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-200 p-4 w-full">
+    <div className="max-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-200 p-4 w-full">
       <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full transition-transform transform hover:scale-105">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">📶 Wi-Fi JSON Generator</h2>
 
