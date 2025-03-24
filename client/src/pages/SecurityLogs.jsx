@@ -7,7 +7,7 @@ const logsList = [
   { id: 3, message: "ESP32 rebooted", type: "Warning", timestamp: "10:15 AM" },
 ];
 
-const SecurityLogs = () => {
+function SecurityLogs() {
   const [logs, setLogs] = useState(logsList);
   const [filter, setFilter] = useState("All");
 

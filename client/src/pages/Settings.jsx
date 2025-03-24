@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ToggleLeft, ToggleRight, Wifi, Lock } from "lucide-react";
 
-const Settings = () => {
+function Settings() {
   const [autoLock, setAutoLock] = useState(true);
   const [wifiEnabled, setWifiEnabled] = useState(true);
 

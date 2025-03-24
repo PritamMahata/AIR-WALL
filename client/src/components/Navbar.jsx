@@ -3,7 +3,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { Sun, Moon } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
-const Navbar = () => {
+function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
 
@@ -14,6 +14,7 @@ const Navbar = () => {
     if (path === "/devices") return "Devices";
     if (path === "/logs") return "Security Logs";
     if (path === "/settings") return "Settings";
+    if (path === "/generate-json") return "JSON Generator";
     return "ESP32 Security Dashboard"; // Default title
   };
 
