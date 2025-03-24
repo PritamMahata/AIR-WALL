@@ -3,7 +3,7 @@ import { FiWifi, FiAlertTriangle, FiCheckCircle } from "react-icons/fi";
 
 const Dashboard = () => {
   return (
-    <div className="p-6 w-304">
+    <div className="p-6 w-full">
       {/* Dashboard Header */}
 
       {/* Status Cards */}
