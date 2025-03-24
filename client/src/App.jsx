@@ -6,6 +6,7 @@ import Devices from "./pages/Devices";
 import SecurityLogs from "./pages/SecurityLogs";
 import Settings from "./pages/Settings";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import Data from "./pages/Data";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/devices" element={<Devices />} />
                 <Route path="/logs" element={<SecurityLogs />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/data" element={<Data />} />
               </Routes>
             </div>
           </div>
