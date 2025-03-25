@@ -16,6 +16,7 @@
 // #define Adafruit_SSD1306 display;
 
 void initDisplay();
+void clearScreen(int setClean);
 void showSplashScreen();
 void displayYellowText();
 void displayScreen1();
