@@ -1,25 +1,38 @@
-#ifndef DISPLAY_HANDLER_H
-#define DISPLAY_HANDLER_H
+#ifndef OLED_DISPLAY_H
+#define OLED_DISPLAY_H
+
+#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-
-#define LOG_BOX_X 5
-#define LOG_BOX_Y 24
-#define LOG_BOX_WIDTH 115
-#define LOG_BOX_HEIGHT 35
-#define LINE_SPACING 8 // Space between log lines
+#include <WiFi.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 
-// #define Adafruit_SSD1306 display;
+class OLED_Display {
+private:
+    Adafruit_SSD1306 display;
+    String logEntries[20];   // Circular buffer for log entries
+    int logIndex = 0;
+    int visibleLogOffset = 0;
+    int currentScreen = 1;
+    int screenCount = 3;
+    int cleanCount = 0;
 
-void initDisplay();
-void clearScreen(int setClean);
-void showSplashScreen();
-void displayYellowText();
-void displayScreen1();
-void displayScreen2();
-void displayScreen3();
+    void clearScreen(int setClean);
+    void displayYellowText();
+    void displayScreenIndicator();
+    void displayLogs();
+
+public:
+    OLED_Display();
+    void init();
+    void showSplashScreen();
+    void displayScreen(int screen);
+    void displayText(String text, int x, int y);
+    void drawGraph(int rssiValues[], int count);
+    void addLog(String log);
+};
+
 #endif
