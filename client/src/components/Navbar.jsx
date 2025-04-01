@@ -23,7 +23,7 @@ function Navbar() {
       <h1 className="text-xl font-bold">{getPageTitle()}</h1>
       <button
         onClick={toggleTheme}
-        className="bg-gray-200 dark:bg-gray-700 p-2 rounded-full"
+        className="bg-gray-200 dark:bg-gray-700 p-2 rounded-full text-black "
       >
         {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
       </button>
