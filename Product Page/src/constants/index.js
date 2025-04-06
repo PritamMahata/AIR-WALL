@@ -220,16 +220,27 @@ export const pricing = [
   {
     id: "1",
     title: "Premium",
-    description: "Coming Soon",
-    price: "",
-    features: []
+    description: "This plan will be available soon with extended features.",
+    price: null, // or "—"
+    features: [
+      "Advanced real-time network monitoring",
+      "Automated port scanning and vulnerability alerts",
+      "Customizable firewall configurations",
+      "Email and SMS intrusion notifications",
+    ],
   },
+  
   {
     id: "2",
     title: "Enterprise",
-    description: "Coming Soon",
-    price: "",
-    features: []
+    description: "Tailored solutions coming soon for large-scale cybersecurity needs.",
+    price: null, // or "—"
+    features: [
+      "Full-suite cybersecurity dashboard with team collaboration",
+      "Wi-Fi analyzer with rogue device detection",
+      "Data encryption module for local and cloud files",
+      "Dedicated support with SLA and custom onboarding",
+    ],
   },
 ];
 
@@ -254,7 +265,7 @@ export const benefits = [
   {
     id: "2",
     title: "Secure Access Anywhere",
-    text: "Access the CyberGuard toolkit from any device, providing protection and insights wherever you go.",
+    text: "Access the AIR-WALL toolkit from any device, providing protection and insights wherever you go.",
     backgroundUrl: "./src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,

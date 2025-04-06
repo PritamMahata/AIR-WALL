@@ -32,7 +32,7 @@ const PricingList = () => {
             href={item.price ? "/pricing" : "mailto:contact@jsmastery.pro"}
             white={!!item.price}
           >
-            {item.price ? "Get started" : "Contact us"}
+            {item.price ? "Purchase" : "Contact us"}
           </Button>
 
           <ul>

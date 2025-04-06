@@ -25,7 +25,7 @@ const Hero = () => {
         <h1 className="h1 mb-6">
           Stay Secure on&nbsp;Any&nbsp;Network with {` `}
           <span className="inline-block relative">
-            CyberGuard32{" "}
+            AIR-WALL{" "}
             <img
               src={curve}
               className="absolute top-full left-0 w-full xl:-mt-2"
@@ -39,7 +39,7 @@ const Hero = () => {
 
 
           <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
-          Unleash smart security with CyberGuard32. Safeguard your Wi-Fi and control IoT devices with our all-in-one embedded solution.
+          Unleash smart security with AIR-WALL. Safeguard your Wi-Fi and control IoT devices with our all-in-one embedded solution.
           </p>
         </div>
         <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
@@ -56,7 +56,7 @@ const Hero = () => {
                   alt="AI"
                 />
 
-                <Generating className="absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2" />
+                {/* <Generating className="absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2" /> */}
 
                 <ScrollParallax isAbsolutelyPositioned>
                   <ul className="hidden absolute -left-[5.5rem] bottom-[7.5rem] px-1 py-1 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-2xl xl:flex">
