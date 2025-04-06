@@ -44,13 +44,13 @@ export const navigation = [
   },
   {
     id: "1",
-    title: "Pricing",
-    url: "#pricing",
+    title: "End Goals",
+    url: "#how-to-use",
   },
   {
     id: "2",
-    title: "End Goals",
-    url: "#how-to-use",
+    title: "Pricing",
+    url: "#pricing",
   },
   {
     id: "3",
@@ -59,12 +59,17 @@ export const navigation = [
   },
   {
     id: "4",
+    title: "docs",
+    url: "#roadmap",
+  },
+  {
+    id: "5",
     title: "New account",
     url: "#signup",
     onlyMobile: true,
   },
   {
-    id: "5",
+    id: "6",
     title: "Sign in",
     url: "#login",
     onlyMobile: true,
