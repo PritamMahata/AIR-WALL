@@ -2,43 +2,65 @@
 #define MAIN_H
 
 // all necessary header files
-// #include <Wire.h>
+#include <Wire.h>
 #include <WiFi.h>
 #include <Arduino.h>
 
-// #include <WebServer.h>
-// #include <WebSocketsServer.h>
-// #include <esp_system.h>
-// #include <esp_spi_flash.h>
-// #include <ArduinoJson.h>
+#include <WebServer.h>
+#include <WebSocketsServer.h>
+#include <esp_system.h>
+#include <esp_spi_flash.h>
+#include <ArduinoJson.h>
 #include "esp_wifi.h"
 #include "esp_heap_caps.h"
 
+// Define switch pins (update according to your wiring)
+const int switch1Pin = 12;
+const int switch2Pin = 13;
 
+// Debounce settings
+unsigned long lastDebounceTime1 = 0;
+unsigned long lastDebounceTime2 = 0;
+const unsigned long debounceDelay = 200;
+
+// Current screen variable
+int currentScreen = 1;
 
 // Include all the header files in the project
 
+
+
 #include "features/hardware/oled_display/oled_display.h"
 #include "features/hardware/oled_display/oled_display.cpp"
+extern OLED_Display display;  // declared in main.h or oled_display.h
 
-// #include "features/connectivity/wifi_handler.h"
-// #include "features/connectivity/wifi_handler.cpp"
+#include "features/connectivity/wifi_handler.h"
+#include "features/connectivity/wifi_handler.cpp"
 
-// #include "storage/sd_handler.h"
-// #include "storage/sd_handler.cpp"
+#include "storage/sd_handler.h"
+#include "storage/sd_handler.cpp"
 
-// #include "utils/logging/logger.h"
-// #include "utils/logging/logger.cpp"
+#include "utils/logging/logger.h"
+#include "utils/logging/logger.cpp"
 
-// #include "features/network_monitor/port_scanner/port_scanner.cpp"
-// #include "features/network_monitor/port_scanner/port_scanner.h"
+#include "features/network_monitor/port_scanner/port_scanner.cpp"
+#include "features/network_monitor/port_scanner/port_scanner.h"
 
 // #include "features/security/deauth_detector/deauth_detector.cpp"
 // #include "features/security/deauth_detector/deauth_detector.h"
 
 #include "features/security/network_sniffer/network_sniffer.cpp"
 #include "features/security/network_sniffer/network_sniffer.h"
+//done
 
+#include "server/api/api_handler.h"
+#include "server/api/api_handler.cpp"
+
+#include "server/core/server.h"
+#include "server/core/server.cpp"
+
+#include "server/encryptor.h"
+#include "server/encryptor.cpp"
 
 
 
@@ -66,18 +88,6 @@
 
 // // Data log buffer
 // extern String logEntries[20];
-
-// // LED states
-// extern bool led1State;
-// extern bool led2State;
-
-// // Debounce variables
-// extern unsigned long lastDebounceTime1;
-// extern unsigned long lastDebounceTime2;
-// extern const unsigned long debounceDelay;
-
-// // OLED display object
-// extern Adafruit_SSD1306 display;
 
 // // Web server and WebSocket objects
 // extern WebServer server;

@@ -1,75 +1,56 @@
 #include "main.h"
-// // void setup() {
-// //     Serial.begin(115200);
-// //     delay(1000);
-// //     logMessage("[BOOT] System Starting...");
-// //     connectWiFi();
-// // }
-// // void loop() {
-// // }
 
-// const char* ssid = "hotspot";
-// const char* password = "@pritam123";
+OLED_Display display;
+Logger logger;
+SDHandler sd(display);
+WiFiHandler wifi(sd, logger);
 
-// void setup() {
-//     // Serial.begin(115200);
-//     // WiFi.begin(ssid, password);
-
-//     // Serial.println("Connecting to WiFi...");
-//     // while (WiFi.status() != WL_CONNECTED) {
-//     //     delay(500);
-//     //     Serial.print(".");
-//     // }
-//     // Serial.println("\nConnected to WiFi!");
-
-//     // // Initialize and run port scanner
-//     // initPortScanner("192.168.64.121");  // Ensure IP is passed as const char*
-//     // scanPorts(20, 100);
-
-//     // std::vector<int> openPorts = getOpenPorts();
-//     // if (!openPorts.empty()) {
-//     //     Serial.println("Open Ports Found:");
-//     //     for (int port : openPorts) {
-//     //         Serial.print("✅ Port ");
-//     //         Serial.print(port);
-//     //         Serial.println(" is open");
-//     //     }
-//     // } else {
-//     //     Serial.println("No open ports found.");
-//     // }
-//     Serial.begin(115200);
-//     delay(1000);
-    
-//     // Start Deauth Detector
-//     initDeauthDetector();
-// }
-
-// void loop() {
-//     Serial.print("🔍 Detected Attacks: ");
-//     Serial.println(getDeauthCount());
-
-//     delay(500);  // Adjust the delay as needed
-// }
-
-
-OLED_Display oled;
-
-void setup() {
+void setup()
+{
     Serial.begin(115200);
-    oled.init();
-    oled.showSplashScreen();
+    display.init();
+    display.showSplashScreen();
+    display.currentScreen = currentScreen;
+
+    // Configure switch pins with internal pull-up resistors
+    pinMode(switch1Pin, INPUT_PULLUP);
+    pinMode(switch2Pin, INPUT_PULLUP);
+
+    wifi.connect();
+    startServer(); // server started
+    logger.add("System startup...");
 }
 
-void loop() {
-    static int screen = 1;
-    oled.displayScreen(screen);
+void loop()
+{
+    display.displayScreen(currentScreen);
+    handleSwitchInput();
+}
 
-    if (Serial.available()) {
-        char input = Serial.read();
-        if (input == '1') screen = 1;
-        else if (input == '2') screen = 2;
-        else if (input == '3') screen = 3;
+void handleSwitchInput()
+{
+    bool switch1State = digitalRead(switch1Pin);
+    bool switch2State = digitalRead(switch2Pin);
+
+    if (switch1State == LOW && (millis() - lastDebounceTime1 > debounceDelay))
+    {
+        currentScreen++;
+        if (currentScreen > display.screenCount)
+        {
+            currentScreen = 1;
+        }
+        lastDebounceTime1 = millis();
+        Serial.println("Switch 1 pressed."); // testing
+        Serial.println(currentScreen);       // testing
     }
 
-    delay(1000);
+    if (switch2State == LOW && (millis() - lastDebounceTime2 > debounceDelay))
+    {
+        lastDebounceTime2 = millis();
+        Serial.println("Switch 2 pressed."); // testing
+    }
 }
+
+
+
+    
