@@ -1,11 +1,20 @@
 #include "alert_manager.h"
-#include "../utils/logger.h"
-#include "../server/api_handler.h"
+#include "oled_display.h" // Assuming you have this class already initialized
 
-void AlertManager::sendAlert(const String& mac) {
-    Logger::log("🚨 ALERT: Unknown device detected - " + mac);
-    
-    // Send alert to web interface
-    String alertJson = "{\"alert\": \"Unknown device detected: " + mac + "\"}";
-    ApiHandler::sendDataToClient(alertJson);
+extern OLED_Display oled; // Assuming this object is globally accessible or passed
+
+namespace AlertManager {
+    void raiseError(const String& source, const String& message) {
+        Serial.println("🛑 Error from " + source + ": " + message);
+        oled.displayError("[ERR] " + source + ": " + message);
+    }
+
+    void raiseWarning(const String& source, const String& message) {
+        Serial.println("⚠️ Warning from " + source + ": " + message);
+        oled.displayError("[WARN] " + source + ": " + message); // Optional: create displayWarning()
+    }
+
+    void clearAlert() {
+        oled.clear(); // Optionally clear screen when things recover
+    }
 }
