@@ -7,28 +7,29 @@ const devicesList = [
   { id: 3, name: "ESP32-Security", status: "Online", ip: "192.168.1.14" },
 ];
 
-function Devices(){
+function Devices() {
   const [devices, setDevices] = useState(devicesList);
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-6 rounded-lg shadow-md w-306">
-      <h2 className="text-2xl font-bold mb-4">Connected Devices</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md w-full max-w-7xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Connected Devices</h2>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {devices.map((device) => (
           <div
             key={device.id}
-            className={`p-4 rounded-lg shadow-lg ${
+            className={`p-4 rounded-xl shadow-lg transition-transform duration-300 hover:scale-105 ${
               device.status === "Online"
                 ? "bg-green-100 dark:bg-green-800"
                 : "bg-red-100 dark:bg-red-800"
             }`}
           >
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{device.name}</h3>
               {device.status === "Online" ? (
-                <ShieldCheck className="text-green-500" size={20} />
+                <ShieldCheck className="text-green-500" size={22} />
               ) : (
-                <Power className="text-red-500" size={20} />
+                <Power className="text-red-500" size={22} />
               )}
             </div>
             <p className="mt-2 text-sm">IP: {device.ip}</p>
@@ -36,7 +37,9 @@ function Devices(){
               Status:{" "}
               <span
                 className={`font-bold ${
-                  device.status === "Online" ? "text-green-600" : "text-red-600"
+                  device.status === "Online"
+                    ? "text-green-600"
+                    : "text-red-600"
                 }`}
               >
                 {device.status}
@@ -47,6 +50,6 @@ function Devices(){
       </div>
     </div>
   );
-};
+}
 
 export default Devices;

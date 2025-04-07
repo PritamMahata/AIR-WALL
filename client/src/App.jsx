@@ -5,13 +5,11 @@ import Dashboard from "./pages/Dashboard";
 import Devices from "./pages/Devices";
 import SecurityLogs from "./pages/SecurityLogs";
 import Settings from "./pages/Settings";
-import { ThemeProvider } from "./contexts/ThemeContext";
 import Data from "./pages/Data";
 import WifiJsonGenerator from "./json/WifiJsonGenerator";
 
 function App() {
   return (
-    <ThemeProvider>
         <Router>
         <div className="flex min-h-screen bg-gray-100">
           {/* Sidebar */}
@@ -35,7 +33,6 @@ function App() {
           </div>
         </div>
       </Router>
-    </ThemeProvider>
   );
 }
 
