@@ -17,7 +17,7 @@ const Services = () => {
       <div className="container">
         <Heading
           title="Next-Gen Cyber Protection."
-          text="CyberGuard unlocks the future of intelligent digital protection."
+          text="AIR-WALL unlocks the future of intelligent digital protection."
         />
 
         <div className="relative">
@@ -33,7 +33,7 @@ const Services = () => {
             </div>
 
             <div className="relative z-1 max-w-[17rem] ml-auto">
-              <h4 className="h4 mb-4">CyberGuard AI</h4>
+              <h4 className="h4 mb-4">AIR-WALL</h4>
               <p className="body-2 mb-[3rem] text-n-3">
               Empowering the future of smart cybersecurity solutions
               </p>

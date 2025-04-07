@@ -29,7 +29,7 @@ const Pricing = () => {
         </div> */}
 
         <Heading
-          tag="Get started with CyberGuard32"
+          tag="Get started with AIR-WALL"
           title="Pay once, use forever"
         />
 
