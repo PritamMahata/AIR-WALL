@@ -60,7 +60,7 @@ export const navigation = [
   {
     id: "4",
     title: "docs",
-    url: "#roadmap",
+    url: "http://localhost:3000/",
   },
   {
     id: "5",
