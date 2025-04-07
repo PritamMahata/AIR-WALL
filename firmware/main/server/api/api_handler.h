@@ -1,9 +1,9 @@
 #ifndef API_HANDLER_H
 #define API_HANDLER_H
 
-#include <ArduinoJson.h>
+#include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
-void setupAPI(AsyncWebServer &server);  // Initialize API endpoints
+void setupAPI(AsyncWebServer &server);
 
-#endif
+#endif // API_HANDLER_H
