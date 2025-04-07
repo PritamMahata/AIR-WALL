@@ -3,9 +3,10 @@
 
 #include <Arduino.h>
 
-class AlertManager {
-public:
-    static void sendAlert(const String& mac);
-};
+namespace AlertManager {
+    void raiseError(const String& source, const String& message);
+    void raiseWarning(const String& source, const String& message);
+    void clearAlert(); // optional
+}
 
 #endif

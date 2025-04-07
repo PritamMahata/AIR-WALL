@@ -1,34 +1,61 @@
 #include "api_handler.h"
-#include "../network_monitor/core/network_manager.h"
-#include "../network_monitor/logging/logger.h"
-#include "../network_monitor/analysis/port_scanner.h"
+#include "../encryptor.h"
+#include "../../features/network_monitor/port_scanner/port_scanner.h"
+#include "../../features/network_monitor/core/network_manager.h"
+#include "../../utils/logging/logger.h"
+#include <ArduinoJson.h>
 
-void setupAPI(AsyncWebServer &server) {
-    server.on("/status", HTTP_GET, [](AsyncWebServerRequest *request) {
+extern Logger logger;
+const String AES_KEY = "1234567890123456"; // 16-byte key
+
+void setupAPI(AsyncWebServer &server)
+{
+    server.on("/status", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
         DynamicJsonDocument doc(200);
         doc["status"] = "Online";
         doc["ip"] = WiFi.localIP().toString();
 
-        String response;
-        serializeJson(doc, response);
-        request->send(200, "application/json", response);
-    });
+        String json;
+        serializeJson(doc, json);
 
-    server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request) {
-        int startPort = 20, endPort = 100;  // Define port range
-        scanPorts(startPort, endPort);      // Call the scanner
+        String encrypted = encryptAES(json, AES_KEY);
+        request->send(200, "application/octet-stream", encrypted); });
 
-        DynamicJsonDocument doc(500);
+    server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+        int startPort = 20, endPort = 100;
+        scanPorts(startPort, endPort);
+
+        DynamicJsonDocument doc(1024);
         doc["message"] = "Port scan completed";
-        doc["open_ports"] = getOpenPorts();
 
-        String response;
-        serializeJson(doc, response);
-        request->send(200, "application/json", response);
-    });
+        JsonArray portArray = doc.createNestedArray("open_ports");
+        std::vector<int> ports = getOpenPorts();
+        for (int port : ports)
+        {
+            portArray.add(port);
+        }
 
-    server.on("/log", HTTP_GET, [](AsyncWebServerRequest *request) {
-        String logs = Logger::getLogs();  // Retrieve log data
-        request->send(200, "text/plain", logs);
-    });
+        String json;
+        serializeJson(doc, json);
+
+        String encrypted = encryptAES(json, AES_KEY);
+        request->send(200, "application/octet-stream", encrypted); });
+
+    server.on("/decrypt", HTTP_POST, [](AsyncWebServerRequest *request)
+              {
+        if (request->hasParam("data", true)) {
+            String encryptedData = request->getParam("data", true)->value();
+            String decrypted = decryptAES(encryptedData, AES_KEY);
+            request->send(200, "text/plain", decrypted);
+        } else {
+            request->send(400, "text/plain", "Missing data");
+        } });
+
+    server.on("/log", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+        String logs = logger.getLogs();
+        String encrypted = encryptAES(logs, AES_KEY);
+        request->send(200, "application/octet-stream", encrypted); });
 }

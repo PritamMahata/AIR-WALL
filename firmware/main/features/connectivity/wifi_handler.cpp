@@ -1,23 +1,35 @@
 #include "wifi_handler.h"
-#include "../../storage/sd_handler.h"
-#include "../../utils/logging/logger.h"
-#include <WiFi.h>
-#include <SD.h>
 
-void connectWiFi() {
+WiFiHandler::WiFiHandler(SDHandler &sdHandler, Logger &logger) : sd(sdHandler), log(logger) {}
+
+void WiFiHandler::connect()
+{
     String ssid, password;
 
-    if (!initSD()) {
-        Serial.println("SD Card init failed");
-    } else if (!readConfig(ssid, password)) {
-        Serial.println("Failed to read WiFi config");
+    if (!sd.init())
+    {
+        Serial.println("[ERROR] SD Card initialization failed.");
+        log.add("[ERROR] SD Card initialization failed.");
+        return;
+    }
+
+    if (!sd.readConfig(ssid, password))
+    {
+        Serial.println("[ERROR] Failed to read WiFi config.");
+        log.add("[ERROR] Failed to read WiFi config.");
+        return;
     }
 
     WiFi.begin(ssid.c_str(), password.c_str());
-    Serial.print("Connecting to WiFi...");
-    while (WiFi.status() != WL_CONNECTED) {
+    Serial.print("[INFO] Connecting to WiFi");
+    log.add("[INFO] Connecting to WiFi");
+
+    while (WiFi.status() != WL_CONNECTED)
+    {
         delay(1000);
         Serial.print(".");
     }
-    Serial.println("\nConnected to WiFi!");
+
+    Serial.println("\n[OK] Connected to WiFi!");
+    log.add("[OK] Connected to WiFi!");
 }
