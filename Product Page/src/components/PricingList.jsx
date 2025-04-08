@@ -1,8 +1,59 @@
 import { check } from "../assets";
 import { pricing } from "../constants";
 import Button from "./Button";
+import Swal from 'sweetalert2';
 
 const PricingList = () => {
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+  
+  const handlePayment = async (item) => {
+    const res = await loadRazorpay();
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+  
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: item.price * 100,  
+      currency: "INR",
+      name: item.title,
+      description: item.description,
+      image: "/logo.png", // optional logo
+      handler: function (response) {
+        Swal.fire({
+          title: '🎉 Payment Successful!',
+          text: `Your payment ID is: ${response.razorpay_payment_id}`,
+          icon: 'success',
+          confirmButtonText: 'OK',
+          background: '#1a1a1a',
+          color: '#fff',
+          confirmButtonColor: '#00c897',
+        });
+      },
+      prefill: {
+        name: "Tuhin Ghosh",
+        email: "someone@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+  
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+  
+
   return (
     <div className="flex gap-[1rem] max-lg:flex-wrap">
       {pricing.map((item) => (
@@ -28,12 +79,14 @@ const PricingList = () => {
           </div>
 
           <Button
-            className="w-full mb-6"
-            href={item.price ? "/pricing" : "mailto:contact@jsmastery.pro"}
-            white={!!item.price}
-          >
-            {item.price ? "Purchase" : "Contact us"}
-          </Button>
+  className="w-full mb-6"
+  onClick={() => item.price ? handlePayment(item) : window.location.href = "mailto:contact@jsmastery.pro"}
+  white={!!item.price}
+>
+  {item.price ? "Purchase" : "Contact us"}
+</Button>
+
+
 
           <ul>
             {item.features.map((feature, index) => (
