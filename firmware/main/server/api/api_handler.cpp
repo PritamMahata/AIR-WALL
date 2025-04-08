@@ -43,6 +43,12 @@ void setupAPI(AsyncWebServer &server)
         String encrypted = encryptAES(json, AES_KEY);
         request->send(200, "application/octet-stream", encrypted); });
 
+    server.on("/log", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+        String logs = logger.getLogs();
+        String encrypted = encryptAES(logs, AES_KEY);
+        request->send(200, "application/octet-stream", encrypted); });
+
     server.on("/decrypt", HTTP_POST, [](AsyncWebServerRequest *request)
               {
         if (request->hasParam("data", true)) {
@@ -53,9 +59,34 @@ void setupAPI(AsyncWebServer &server)
             request->send(400, "text/plain", "Missing data");
         } });
 
-    server.on("/log", HTTP_GET, [](AsyncWebServerRequest *request)
+    server.on("/network", HTTP_GET, [](AsyncWebServerRequest *request)
               {
-        String logs = logger.getLogs();
-        String encrypted = encryptAES(logs, AES_KEY);
+        DynamicJsonDocument doc(200);
+        doc["status"] = "Online";
+        doc["ip"] = WiFi.localIP().toString();
+        doc["gateway"] = WiFi.gatewayIP().toString();
+        doc["subnet"] = WiFi.subnetMask().toString();
+        doc["dns"] = WiFi.dnsIP().toString();
+        doc["mac"] = WiFi.macAddress();
+        doc["hostname"] = WiFi.getHostname();
+        doc["ssid"] = WiFi.SSID();
+        doc["rssi"] = WiFi.RSSI();
+        doc["channel"] = WiFi.channel();
+        doc["bssid"] = WiFi.BSSIDstr();
+        doc["connected"] = WiFi.status() == WL_CONNECTED ? true : false;
+        doc["scan_count"] = WiFi.scanComplete();
+        doc["scan_time"] = WiFi.scanNetworks(true);
+        doc["scan_result"] = WiFi.scanNetworks(false, true);
+        doc["scan_result_count"] = WiFi.scanComplete();
+        doc["scan_result_time"] = WiFi.scanNetworks(true, true);
+        String json;
+        serializeJson(doc, json);
+
+        String encrypted = encryptAES(json, AES_KEY);
         request->send(200, "application/octet-stream", encrypted); });
+
+
+    server.onNotFound([](AsyncWebServerRequest *request)
+                      { request->send(404, "text/plain", "Not Found"); });
+
 }

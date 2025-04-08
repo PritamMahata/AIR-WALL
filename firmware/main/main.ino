@@ -25,6 +25,7 @@ void loop()
 {
     display.displayScreen(currentScreen);
     handleSwitchInput();
+    broadcastEncrypted("{\"temp\":28.5,\"alert\":false}");
 }
 
 void handleSwitchInput()
