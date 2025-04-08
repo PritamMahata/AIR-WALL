@@ -1,9 +1,12 @@
 import { check } from "../assets";
 import { pricing } from "../constants";
 import Button from "./Button";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
+import { useUser } from "@clerk/clerk-react";
 
 const PricingList = () => {
+  const { isSignedIn, user } = useUser();
+
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -13,46 +16,58 @@ const PricingList = () => {
       document.body.appendChild(script);
     });
   };
-  
+
   const handlePayment = async (item) => {
+    if (!isSignedIn) {
+      Swal.fire({
+        title: "Please sign in to continue",
+        text: "You need to be logged in to make a purchase.",
+        icon: "warning",
+        confirmButtonText: "Sign In",
+        background: "#1a1a1a",
+        color: "#fff",
+        confirmButtonColor: "#f39c12",
+      });
+      return;
+    }
+
     const res = await loadRazorpay();
     if (!res) {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
-  
+
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: item.price * 100,  
+      amount: item.price * 100,
       currency: "INR",
       name: item.title,
       description: item.description,
-      image: "/logo.png", // optional logo
+      image: "/logo.png",
       handler: function (response) {
         Swal.fire({
-          title: '🎉 Payment Successful!',
+          title: "🎉 Payment Successful!",
           text: `Your payment ID is: ${response.razorpay_payment_id}`,
-          icon: 'success',
-          confirmButtonText: 'OK',
-          background: '#1a1a1a',
-          color: '#fff',
-          confirmButtonColor: '#00c897',
+          icon: "success",
+          confirmButtonText: "OK",
+          background: "#1a1a1a",
+          color: "#fff",
+          confirmButtonColor: "#00c897",
         });
       },
       prefill: {
-        name: "Tuhin Ghosh",
-        email: "someone@example.com",
+        name: user.fullName || "Customer",
+        email: user.primaryEmailAddress?.emailAddress || "someone@example.com",
         contact: "9999999999",
       },
       theme: {
-        color: "#3399cc",
+        color: "#9b59b6",
       },
     };
-  
+
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
-  
 
   return (
     <div className="flex gap-[1rem] max-lg:flex-wrap">
@@ -70,7 +85,7 @@ const PricingList = () => {
           <div className="flex items-center h-[5.5rem] mb-6">
             {item.price && (
               <>
-                <div className="h3">  ₹</div>
+                <div className="h3"> ₹</div>
                 <div className="text-[5.5rem] leading-none font-bold">
                   {item.price}
                 </div>
@@ -79,14 +94,16 @@ const PricingList = () => {
           </div>
 
           <Button
-  className="w-full mb-6"
-  onClick={() => item.price ? handlePayment(item) : window.location.href = "mailto:contact@jsmastery.pro"}
-  white={!!item.price}
->
-  {item.price ? "Purchase" : "Contact us"}
-</Button>
-
-
+            className="w-full mb-6"
+            onClick={() =>
+              item.price
+                ? handlePayment(item)
+                : (window.location.href = "mailto:contact@jsmastery.pro")
+            }
+            white={!!item.price}
+          >
+            {item.price ? "Purchase" : "Contact us"}
+          </Button>
 
           <ul>
             {item.features.map((feature, index) => (

@@ -13,7 +13,35 @@ if (!PUBLISHABLE_KEY) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <ClerkProvider
+      appearance={{
+        baseTheme: {
+          colorScheme: 'dark',
+          variables: {
+            colorPrimary: '#9b59b6',
+            colorText: '#e5d4ef',
+            colorTextSecondary: '#c8a2d9',
+            colorTextOnPrimary: '#ffffff',
+            colorBackground: '#1b1125',
+            colorBackgroundSecondary: '#2c1a3a',
+            colorInputBackground: '#2e1c3c',
+            colorInputText: '#fff',
+            colorInputBorder: '#8e44ad',
+          },
+        },
+        elements: {
+          userButtonPopoverActionButton: {
+            color: '#ffffff',
+          },
+          userButtonPopoverActionButtonText: {
+            color: '#ffffff',
+          },
+          userButtonPopoverActionButtonIcon: {
+            color: '#ffffff',
+          },
+        },
+      }}
+    publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <BrowserRouter>
         <App />
       </BrowserRouter>
