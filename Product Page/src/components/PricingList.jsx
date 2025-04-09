@@ -23,10 +23,8 @@ const PricingList = () => {
         title: "Please sign in to continue",
         text: "You need to be logged in to make a purchase.",
         icon: "warning",
-        confirmButtonText: "Sign In",
         background: "#1a1a1a",
         color: "#fff",
-        confirmButtonColor: "#f39c12",
       });
       return;
     }

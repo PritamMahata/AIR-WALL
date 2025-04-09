@@ -8,4 +8,33 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  server: {
+    proxy: {
+      '/status': {
+        target: 'http://192.168.39.120', // Replace with your ESP32 IP
+        changeOrigin: true,
+        secure: false,
+      },
+      '/scan': {
+        target: 'http://192.168.39.120',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/log': {
+        target: 'http://192.168.39.120',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/decrypt': {
+        target: 'http://192.168.39.120',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/network': {
+        target: 'http://192.168.39.120',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })
