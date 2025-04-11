@@ -12,6 +12,8 @@ public:
     SDHandler(OLED_Display &oledDisplay, int csPin = 5);
     bool init();
     bool readConfig(String &ssid, String &password);
+    bool readMode(String &mode);
+    bool writeMode(const String &mode);
 
 private:
     int _csPin;

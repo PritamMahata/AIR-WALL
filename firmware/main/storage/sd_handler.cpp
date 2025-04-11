@@ -50,3 +50,46 @@ bool SDHandler::readConfig(String &ssid, String &password)
     Serial.println("SSID: " + ssid);
     return true;
 }
+
+bool SDHandler::readMode(String &mode)
+{
+    File file = SD.open("/config.json", FILE_READ);
+    if (!file)
+    {
+        Serial.println("[WARN] config.json not found. Creating default mode...");
+        return writeMode("passive") && (mode = "passive", true);
+    }
+
+    DynamicJsonDocument doc(512);
+    DeserializationError err = deserializeJson(doc, file);
+    file.close();
+    if (err || !doc.containsKey("mode"))
+    {
+        Serial.println("[WARN] Invalid config or missing 'mode'. Setting to passive...");
+        return writeMode("passive") && (mode = "passive", true);
+    }
+
+    mode = doc["mode"].as<String>();
+    return true;
+}
+
+bool SDHandler::writeMode(const String &mode)
+{
+    File file = SD.open("/config.json", FILE_READ);
+    if (!file)
+        return false;
+    DynamicJsonDocument doc(512);
+    deserializeJson(doc, file);
+    file.close();
+
+    doc["mode"] = mode;
+
+    file = SD.open("/config.json", FILE_WRITE);
+    if (!file)
+        return false;
+    serializeJson(doc, file);
+    file.close();
+    return true;
+}
+// This code is a simple SD card handler for an Arduino project. It initializes the SD card, reads configuration data (SSID and password) from a JSON file, and allows writing a mode back to the JSON file. The OLED display is used to show error messages when something goes wrong.
+// The code uses the ArduinoJson library to handle JSON data and the SD library for SD card operations. The SDHandler class encapsulates all the functionality related to the SD card, making it easy to use in other parts of the project.
