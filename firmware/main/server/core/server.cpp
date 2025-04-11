@@ -3,7 +3,7 @@
 #include "../encryptor.h"
 
 AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");  // WebSocket endpoint
+AsyncWebSocket ws("/");  // WebSocket endpoint
 
 // Store clients
 void onWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
