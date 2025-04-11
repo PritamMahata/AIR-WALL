@@ -1,47 +1,31 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 ---
 
-# Tutorial Intro
+# 🌐 Introducing AIR-WALL
 
-Let's discover **Docusaurus in less than 5 minutes**.
+This project aims to develop a security toolkit using the ESP32 microcontroller to detect and protect Wi-Fi networks from deauthentication and jamming attacks. It features a web-based dashboard, real-time monitoring, and automatic countermeasures.
 
-## Getting Started
+## 🔍 Problem Statement
+Wi-Fi deauthentication and jamming attacks are simple to execute but disruptive. Most networks lack affordable, real-time detection tools. This project solves that by providing a compact and effective solution using ESP32.
 
-Get started by **creating a new site**.
+## 🚀 Features
+- Real-time Deauth Detection
+- Protected Management Frame (PMF) Support
+- Jam Detection & Countermeasures
+- Web Dashboard Control
+- MAC Address Logging & Monitoring
+- Sleep/Restart Mode Commands
+- Optional SD Card Logging
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## 🧰 Tech Stack
+- Microcontroller: ESP32
+- Language: C++ / MicroPython
+- Libraries: `WiFi.h`, `WebServer.h`, JSON
+- Frontend: HTML/CSS/JavaScript Dashboard
+- Optional: GPS, RTC, SD Card Modules
 
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+## 🧪 Use Case
+- Ethical hacking & Pen Testing
+- Home and Office Wi-Fi Protection
+- Educational & Research Demonstration

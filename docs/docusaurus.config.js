@@ -10,9 +10,9 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  favicon: 'img/favicon.ico',
+  title: 'AIR WALL',
+  tagline: 'IOT devices are cool',
+  favicon: 'img/favicon.svg',
 
   // Set the production url of your site here
   url: 'https://your-docusaurus-site.example.com',
@@ -88,9 +88,8 @@ const config = {
             position: 'left',
             label: 'docs',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/',
+            href: 'https://github.com/PritamMahata/AIR-WALL-NEW',
             label: 'GitHub',
             position: 'right',
           },
@@ -129,12 +128,8 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
-                href: 'https://github.com/',
+                href: 'https://github.com/PritamMahata/AIR-WALL-NEW',
               },
             ],
           },

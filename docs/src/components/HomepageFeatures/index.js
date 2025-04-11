@@ -4,32 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: '🚀 Easy to Set Up, Simple to Operate',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        AIR-WALL was designed from the ground up to be easily installed and operated, allowing users to quickly deploy, configure, and monitor their IoT-based network wall through an intuitive interface and minimal hardware setup.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: '🎯 Focus on What Matters',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        AIR-WALL lets you focus on securing and monitoring your IoT environment—we handle the background processes. From Wi-Fi configuration to real-time dashboard monitoring, everything is streamlined so you can spend more time using the device, not setting it up.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: '⚛️ Powered by ESP32 & Web Interface',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        AIR-WALL combines the power of ESP32 with a responsive web dashboard to provide real-time control and monitoring. The interface is lightweight, extendable, and designed to deliver a smooth user experience—whether you're switching modes or checking logs.
       </>
     ),
   },
