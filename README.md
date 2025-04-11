@@ -1,41 +1,87 @@
-# Website
+# 🌐 AIR-WALL
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+**AIR-WALL** is a smart IoT device built on the ESP32 platform, offering seamless wireless control, real-time monitoring, and secure network interaction through a web-based dashboard.
 
-### Installation
+---
 
-```
-$ yarn
-```
-
-### Local Development
+## 📁 Codebase Structure
 
 ```
-$ yarn start
+├── client                  # Frontend dashboard 
+├── Config_Json_Generator   # Generate config.json 
+├── docs                    # Docusaurus documentation files
+├── firmware                # ESP32 firmware (C/C++ code for microcontroller)
+├── Product Page            # Public page to showcase and purchase AIR-WALL
+├── .gitignore
+└── README.md
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+## 🚀 Getting Started
 
-### Build
+### 1. Visit the Product Page
+Navigate to the `Product Page` folder or website to learn about **AIR-WALL** and initiate a purchase.
 
-```
-$ yarn build
-```
+### 2. Generate Config
+After purchase, generate your `config.json` using the **Config Generator**.
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+- Add your Wi-Fi credentials and other setup values.
 
-### Deployment
+### 3. Save to SD Card
+- Save the `config.json` to your SD card.
+- Insert the SD card into the device.
 
-Using SSH:
+### 4. Power On Device
+- Power your **AIR-WALL**.
+- The OLED screen will display the IP address and device status.
 
-```
-$ USE_SSH=true yarn deploy
-```
+### 5. Access Dashboard
+- Type the shown IP into your browser.
+- Open the AIR-WALL dashboard to control and monitor your device.
 
-Not using SSH:
+---
 
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
+# 📚 Documentation
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Explore rich documentation in the `docs/` folder or on the hosted Docusaurus site:
+
+- ✨ [Feature List](./docs/features.md)
+- 🔮 [Future Scope](./docs/future-scope.md)
+- 📚 [Research & References](./docs/references.md)
+- 🧠 [Technical Architecture](./docs/technical-architecture.md)
+- 📦 [Hardware Components](./docs/hardware-components.md)
+- 💡 [Use Cases](./docs/use-case.md)
+
+---
+
+## 📖 Tutorials
+
+- 🛒 Getting Started  
+- ⚙️ Config Generator  
+- 💾 Saving to SD Card  
+- 🚀 Accessing Dashboard  
+- 🧪 Testing the Connection  
+- 🔄 Resetting Wi-Fi Credentials  
+- ⚠️ Device Safety & Handling  
+
+---
+
+## ⚙️ Technologies Used
+
+| Component        | Technology         |
+|------------------|--------------------|
+| Microcontroller  | ESP32              |
+| Interface        | OLED Display       |
+| Connectivity     | Wi-Fi (Configurable) |
+| Dashboard        | React.js           |
+| Documentation    | Docusaurus         |
+| Storage          | SD Card            |
+
+---
+
+## 💡 Real-World Use Cases
+
+- 🔐 **Cybersecurity Demonstrations**
+- 🌐 **IoT Network Monitoring**
+- ⚙️ **Automation Control for Smart Devices**
+- 🧪 **Educational Purposes in Embedded Systems**
+
