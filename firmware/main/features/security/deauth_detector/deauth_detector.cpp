@@ -3,6 +3,15 @@
 
 volatile int deauthCount = 0;
 
+void buzzerAlert()
+{
+    digitalWrite(BUZZER_PIN, HIGH); // Turn on the buzzer
+    delay(200);                     // Wait for 1 second
+    digitalWrite(BUZZER_PIN, LOW);  // Turn off the buzzer
+    delay(200);                     // Wait for 1 second
+    digitalWrite(BUZZER_PIN, HIGH); // Turn on the buzzer again
+}
+
 // Callback function to process incoming packets
 void promiscuous_rx(void *buf, wifi_promiscuous_pkt_type_t type)
 {
@@ -18,7 +27,9 @@ void promiscuous_rx(void *buf, wifi_promiscuous_pkt_type_t type)
     {
         deauthCount++;
         Serial.println("[ALERT] Deauthentication/Disassociation Attack Detected!");
+        buzzerAlert();
     }
+    digitalWrite(BUZZER_PIN, LOW); // Turn off the buzzer after processing the packet
 }
 
 // Initialize the Deauth Detector
