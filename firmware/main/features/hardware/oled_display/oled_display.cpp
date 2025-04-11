@@ -23,9 +23,7 @@ void OLED_Display::clearScreen(int setClean)
         cleanCount++;
     }
     else
-    {
         display.fillRect(0, 16, SCREEN_WIDTH, SCREEN_HEIGHT - 21, SSD1306_BLACK);
-    }
 }
 
 void OLED_Display::showSplashScreen()
@@ -61,13 +59,9 @@ void OLED_Display::displayScreenIndicator()
     for (int i = 1; i <= screenCount; i++)
     {
         if (i == currentScreen)
-        {
             display.fillCircle(baseX + (i * spacing), y, 2, SSD1306_WHITE);
-        }
         else
-        {
             display.drawCircle(baseX + (i * spacing), y, 2, SSD1306_WHITE);
-        }
     }
     display.display();
 }
@@ -91,8 +85,7 @@ void OLED_Display::displayScreen(int screen)
             display.println(WiFi.localIP());
             display.print("SSID: ");
             display.println(WiFi.SSID());
-            display.print("Mode: ");
-            display.println("Active");
+            display.println("Mode: " + currentMode);
         }
         else
         {
@@ -178,3 +171,16 @@ void OLED_Display::displayError(const String &error)
     display.display();
     displayScreenIndicator();
 }
+
+void OLED_Display::displayMode(const String &mode)
+{
+    setMode(mode); // ensure the internal mode is updated
+    clearScreen(1);
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(5, 10);
+    display.println("Mode: " + currentMode); // now it works
+    display.display();
+}
+
+void OLED_Display::setMode(const String &mode) { currentMode = mode; }

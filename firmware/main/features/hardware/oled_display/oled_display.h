@@ -13,6 +13,7 @@
 class OLED_Display
 {
 private:
+    String currentMode = "passive";
     Adafruit_SSD1306 display;
     String logEntries[20]; // Circular buffer for log entries
     int logIndex = 0;
@@ -35,6 +36,8 @@ public:
     void drawGraph(int rssiValues[], int count);
     void addLog(String log);
     void displayError(const String &error);
+    void displayMode(const String &mode);
+    void setMode(const String &mode); 
 };
 
 #endif
