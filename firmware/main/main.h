@@ -19,7 +19,7 @@ const int switch1Pin = 12;
 const int switch2Pin = 13;
 const int LED_RED_PIN = 14;
 const int LED_GREEN_PIN = 27;
-const int LED_BLUE_PIN = 26;
+const int LED_BLUE_PIN = 2;
 const int BUZZER_PIN = 25;
 
 // Debounce settings
@@ -32,9 +32,21 @@ int currentScreen = 1;
 
 const int deauthThreshold = 20; // Threshold for deauth detection
 
+
+String serialBuffer = ""; // check
+String chipInfo = "";     // check
+
+int freeHeap = 0;
+int minFreeHeap = 0;
+int totalHeap = 0;
+
+String netInfo = ""; // check
+
+int runtimeInfo = 0; // check
+
+int signalStrength = 0; // check
+
 // Include all the header files in the project
-
-
 
 #include "features/hardware/oled_display/oled_display.h"
 #include "features/hardware/oled_display/oled_display.cpp"
@@ -68,34 +80,10 @@ extern OLED_Display display;  // declared in main.h or oled_display.h
 #include "server/encryptor.cpp"
 //done
 
+#include "features/network_monitor/analysis/ssid_analyzer.h"
+#include "features/network_monitor/analysis/ssid_analyzer.cpp"
 
-// #include "features/networktraffic/networktraffic.h"
+// #include "features/network_monitor/networktraffic/networktraffic.h"
 // #include "features/networktraffic/networktraffic.cpp"
-
-// #include "C:/Users/prita/Desktop/AIR-WALL/backend/server/api_handler.h"
-// #include "C:/Users/prita/Desktop/AIR-WALL/backend/server/server.h"
-
-// // Password settings
-// extern const int passwordLength;
-// extern const String charset;
-
-// // Pin assignments
-// extern const int switch1Pin;
-// extern const int switch2Pin;
-// extern const int ledPin;
-
-// // State variables
-// extern int currentScreen;
-// extern int cleanCount;
-// extern int logIndex;
-// extern int visibleLogOffset;
-// extern int deauthTrying;
-
-// // Data log buffer
-// extern String logEntries[20];
-
-// // Web server and WebSocket objects
-// extern WebServer server;
-// extern WebSocketsServer webSocket;
 
 #endif

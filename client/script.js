@@ -37,7 +37,7 @@ function clearLog() {
 
 // WebSocket Connection
 function connectWS() {
-  const url = document.getElementById("wsUrl").value;
+  const url = "http://" + document.getElementById("wsUrl").value;
 
   if (socket && socket.readyState === WebSocket.OPEN) {
     socket.close();
@@ -45,7 +45,6 @@ function connectWS() {
 
   try {
     socket = new WebSocket(url);
-
     socket.onopen = () => {
       log("✅ WebSocket connected");
       updateConnectionStatus(true);
@@ -56,13 +55,22 @@ function connectWS() {
     socket.onmessage = (event) => {
       try {
         const decrypted = decryptData(event.data);
-        log("🔓 Decrypted: " + decrypted);
-
-        // Try to parse as JSON and update UI
+        // log("🔓 Decrypted: " + decrypted);
         try {
-          const data = JSON.parse(decrypted);
-          updateSensorData(data);
+          let jsonStart = decrypted.indexOf("{");
+          let jsonEnd = decrypted.lastIndexOf("}");
+          if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+            const jsonString = decrypted.substring(jsonStart, jsonEnd + 1);
+            try {
+              const data = JSON.parse(jsonString);
+              updateSensorData(data);
+            } catch (e) {
+              console.log("⚠️ JSON Parse error:", e);
+              console.log("⛔ Problematic JSON string:", jsonString);
+            }
+          }
         } catch (e) {
+          console.log(e);
           // Not JSON or parsing error
         }
       } catch (e) {
@@ -201,22 +209,177 @@ function requestAllSensors() {
 
 // Update Sensor Data
 function updateSensorData(data) {
-  if (data.temperature !== undefined) {
-    document.getElementById(
-      "temperatureValue"
-    ).textContent = `${data.temperature}°C`;
-    addDataToChart(temperatureChart, data.temperature);
+  // console.log(data);
+
+  document.getElementById("modeValue").innerText = "📳" + data.mode || "--";
+  document.getElementById("netInfo").innerHTML = data.netInfo || "--";
+  document.getElementById("chipInfo").innerHTML = data.chipInfo || "--";
+
+  const seconds = data.runtimeInfo;
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+  document.getElementById(
+    "uptime"
+  ).innerHTML = `${hours}h ${minutes}m ${remainingSeconds}s`;
+
+  // signal Strength
+  let power = 100 - -data.signalStrength;
+  if (power >= 60) {
+    document.getElementById("signalStrength").style.backgroundColor = "#00dc09";
+  } else if (power <= 60 && power >= 40) {
+    document.getElementById("signalStrength").style.backgroundColor = "#5852ff";
+  } else {
+    document.getElementById("signalStrength").style.backgroundColor = "#fe0000";
+  }
+  signalStrength.style.width = `${power}%`;
+  signalInfo.innerHTML = `${power}% (${data.signalStrength}) dBm`;
+
+  function updateHeapStats(data) {
+    const totalHeap = data.totalHeap;
+    const freeHeap = data.freeHeap;
+    const usedHeap = totalHeap - freeHeap;
+
+    const usedPercent = Math.round((usedHeap / totalHeap) * 100);
+    const freePercent = 100 - usedPercent;
+
+    // Convert to MB (rounded to 2 decimals)
+    const usedMB = (usedHeap / 1024 / 1024).toFixed(2);
+    const totalMB = (totalHeap / 1024 / 1024).toFixed(2);
+    const freeMB = (freeHeap / 1024 / 1024).toFixed(2);
+
+    // Update text
+    document.querySelector(
+      ".memory-item:nth-child(1) p"
+    ).innerText = `Heap: ${usedPercent}% (${usedMB}/${totalMB} MB)`;
+    document.querySelector(
+      ".memory-item:nth-child(2) p"
+    ).innerText = `Free: ${freePercent}% (${freeMB}/${totalMB} MB)`;
+
+    // Update progress bar width
+    document.getElementById("heap").style.width = `${usedPercent}%`;
+    document.getElementById("freeHeap").style.width = `${freePercent}%`;
+
+    // Optional: color coding (based on freeHeap %)
+    const fillColor =
+      freePercent >= 50 ? "#00dc09" : freePercent >= 25 ? "#ffae00" : "#fe0000";
+    document.getElementById("heap").style.backgroundColor = "#007bff";
+    document.getElementById("freeHeap").style.backgroundColor = fillColor;
   }
 
-  if (data.humidity !== undefined) {
-    document.getElementById("humidityValue").textContent = `${data.humidity}%`;
-    addDataToChart(humidityChart, data.humidity);
+  const totalHeap = data.totalHeap;
+  const freeHeap = data.freeHeap;
+  const usedHeap = totalHeap - freeHeap;
+
+  const usedPercent = Math.round((usedHeap / totalHeap) * 100);
+  const freePercent = 100 - usedPercent;
+
+  // Convert to MB (rounded to 2 decimals)
+  const usedMB = (usedHeap / 1024 / 1024).toFixed(2);
+  const totalMB = (totalHeap / 1024 / 1024).toFixed(2);
+  const freeMB = (freeHeap / 1024 / 1024).toFixed(2);
+
+  // Update text
+  document.querySelector(
+    ".memory-item:nth-child(1) p"
+  ).innerText = `Heap: ${usedPercent}% (${usedMB}/${totalMB} MB)`;
+  document.querySelector(
+    ".memory-item:nth-child(2) p"
+  ).innerText = `Free: ${freePercent}% (${freeMB}/${totalMB} MB)`;
+
+  // Update progress bar width
+  document.getElementById("heap").style.width = `${usedPercent}%`;
+  document.getElementById("freeHeap").style.width = `${freePercent}%`;
+
+  // Optional: color coding (based on freeHeap %)
+  const fillColor =
+    freePercent >= 50 ? "#00dc09" : freePercent >= 25 ? "#ffae00" : "#fe0000";
+  document.getElementById("heap").style.backgroundColor = "#007bff";
+  document.getElementById("freeHeap").style.backgroundColor = fillColor;
+
+  // document.getElementById("modeValue").innerText = data.mode || "--";
+  // console.log(data);
+
+  // You can adapt these based on actual system checks
+  document.getElementById("sdStatus").innerText = "🗃️ Mounted"; // Update dynamically if needed
+  document.getElementById("deauthStatus").innerText =
+    data.mode === "active" ? "✅Enabled" : "⚠️Disabled";
+  document.getElementById("aesStatus").innerText = "🔐Enabled"; // Hardcoded, as AES is always on
+
+  const ctx = document.getElementById("trafficChart").getContext("2d");
+
+  const trafficChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "Packets/sec",
+          data: [],
+          fill: true,
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "#36A2EB",
+          borderWidth: 2,
+          tension: 0.4,
+          pointRadius: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 500,
+      },
+      scales: {
+        y: {
+          min: 30,
+          max: 80,
+          ticks: {
+            stepSize: 10,
+          },
+          title: {
+            display: true,
+            text: "Packets/sec",
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Time",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
+
+  let lastValue = 55;
+
+  function updateTrafficChart(value) {
+    const currentTime = new Date().toLocaleTimeString();
+
+    trafficChart.data.labels.push(currentTime);
+    trafficChart.data.datasets[0].data.push(value);
+
+    if (trafficChart.data.labels.length > 15) {
+      trafficChart.data.labels.shift();
+      trafficChart.data.datasets[0].data.shift();
+    }
+
+    trafficChart.update();
   }
 
-  if (data.battery !== undefined) {
-    document.getElementById("batteryValue").textContent = `${data.battery}%`;
-    updateStatusPieChart(data);
-  }
+  setInterval(() => {
+    // Smooth fluctuations between 40-70
+    const variation = Math.random() * 6 - 3; // ±3
+    lastValue += variation;
+    lastValue = Math.max(40, Math.min(70, lastValue));
+    updateTrafficChart(Math.round(lastValue));
+  }, 2000);
 }
 
 // Tab Navigation
@@ -399,43 +562,86 @@ function updateStatusPieChart(data) {
   }
 }
 
-// Simulate data for demo purposes
-let simulationInterval;
+document.addEventListener("DOMContentLoaded", () => {
+  // initCharts();
+  // Initialize with some data
+});
 
-function startSimulation() {
-  simulationInterval = setInterval(() => {
-    // Generate random data
-    const temperature = (20 + Math.random() * 10).toFixed(1);
-    const humidity = Math.floor(30 + Math.random() * 50);
-    const battery = Math.floor(50 + Math.random() * 50);
+function sendCommandViaHttp(command, value = null) {
+  const payload = {
+    command: command,
+    state: value,
+  };
 
-    // Update UI
-    updateSensorData({
-      temperature: parseFloat(temperature),
-      humidity: humidity,
-      battery: battery,
+  const encrypted = encryptData(JSON.stringify(payload));
+
+  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `data=${encodeURIComponent(encrypted)}`,
+  })
+    .then((response) => response.text())
+    .then((decryptedResponse) => {
+      log("✅ Response from /decrypt: " + decryptedResponse);
+    })
+    .catch((error) => {
+      log("⚠️ Error: " + error.message);
     });
-
-    // Log simulated data
-    log(
-      `🤖 Simulated data: Temp=${temperature}°C, Humidity=${humidity}%, Battery=${battery}%`
-    );
-  }, 5000);
 }
 
-// function stopSimulation() {
-//   clearInterval(simulationInterval);
-// }
+function sendRebootCommand(command, value = null) {
+  const payload = {
+    command: "reboot"
+  };
+  
+  const encrypted = encryptData(JSON.stringify(payload));
 
-// Initialize
-// document.addEventListener("DOMContentLoaded", () => {
-//   initCharts();
-//   startSimulation(); // Start simulation for demo
+  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `data=${encodeURIComponent(encrypted)}`,
+  })
+    .then((response) => response.text())
+    .then((decryptedResponse) => {
+      log("✅ Response from /decrypt: " + decryptedResponse);
+    })
+    .catch((error) => {
+      log("⚠️ Error: " + error.message);
+    });
+}
 
-//   // Initialize with some data
-//   updateSensorData({
-//     temperature: 22.5,
-//     humidity: 45,
-//     battery: 78,
-//   });
-// });
+
+function sendPortScan(startPort = 20, endPort = 100) {
+  const commandObj = {
+      command: "scan",
+      startPort,
+      endPort
+  };
+
+  const encrypted = encryptData(JSON.stringify(commandObj));
+  console.log(encrypted);
+  
+  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `data=${encodeURIComponent(encrypted)}`
+  })
+  .then(res => res.text())
+  .then(decryptedResponse => {
+      console.log("Scan result:\n", decryptedResponse);
+      alert("📡 Port Scan Result:\n\n" + decryptedResponse);
+  })
+  .catch(err => {
+      console.error("Scan failed:", err);
+      alert("❌ Failed to scan ports.");
+  });
+}

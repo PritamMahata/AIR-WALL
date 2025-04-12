@@ -1,5 +1,9 @@
 #include "oled_display.h"
 
+String logEntries[20];    // Circular buffer for log entries (adjust size as needed)
+int logIndex = 0;         // Circular buffer index
+int visibleLogOffset = 0; // Index to manage scrolling of logs
+
 OLED_Display::OLED_Display() : display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET) {}
 
 void OLED_Display::init()
@@ -112,17 +116,32 @@ void OLED_Display::displayScreen(int screen)
     displayScreenIndicator();
 }
 
+void OLED_Display::addLog(String log)
+{
+    logEntries[logIndex] = log;
+    logIndex = (logIndex + 1) % 20;
+}
+
 void OLED_Display::displayLogs()
 {
-    int yPosition = 20;
-    for (int i = 0; i < 4; i++)
+    int totalLogs = 20;
+    int visibleLogs = 4;
+    int yPosition = 26;
+
+    // Show the last 4 recent logs in correct order
+    for (int i = 0; i < visibleLogs; i++)
     {
-        int index = (logIndex + i) % 20;
-        display.setCursor(2, yPosition + i * 10);
-        display.print(logEntries[index]);
+        int idx = (logIndex - visibleLogs + i + totalLogs) % totalLogs;
+        if (logEntries[idx].length() > 0)
+        {
+            display.setCursor(2, yPosition + i * 10);
+            display.println(logEntries[idx]);
+        }
     }
+
     display.display();
 }
+
 
 void OLED_Display::displayText(String text, int x, int y)
 {
@@ -147,12 +166,6 @@ void OLED_Display::drawGraph(int rssiValues[], int count)
         display.drawLine(x1, y1, x2, y2, SSD1306_WHITE);
     }
     display.display();
-}
-
-void OLED_Display::addLog(String log)
-{
-    logEntries[logIndex] = log;
-    logIndex = (logIndex + 1) % 20;
 }
 
 void OLED_Display::displayError(const String &error)

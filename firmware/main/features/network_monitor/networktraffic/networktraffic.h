@@ -15,10 +15,11 @@ struct TrafficData {
     bool isUnknown;
 };
 
-void startNetworkMonitoring();
-void sniffPacket(void* buf, wifi_promiscuous_pkt_type_t type);
-void analyzeTraffic();
-void sendTrafficDataToWeb();
-void processWebSocket();
+// void startNetworkMonitoring();
+// void sniffPacket(void* buf, wifi_promiscuous_pkt_type_t type);
+// void analyzeTraffic();
+// void sendTrafficDataToWeb();
+// void processWebSocket();
+int getNetworkTraffic();
 
 #endif

@@ -6,10 +6,11 @@ volatile int deauthCount = 0;
 void buzzerAlert()
 {
     digitalWrite(BUZZER_PIN, HIGH); // Turn on the buzzer
+    digitalWrite(LED_RED_PIN, HIGH); // Turn on the red LED
     delay(200);                     // Wait for 1 second
     digitalWrite(BUZZER_PIN, LOW);  // Turn off the buzzer
-    delay(200);                     // Wait for 1 second
-    digitalWrite(BUZZER_PIN, HIGH); // Turn on the buzzer again
+    digitalWrite(LED_RED_PIN, LOW); // Turn off the red LED
+    delay(200);
 }
 
 // Callback function to process incoming packets

@@ -4,19 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ESP32 IoT Dashboard</title>
+  <title>Air-Wall Dashboard</title>
   <!-- Chart.js for visualizations -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   <!-- Crypto-JS for encryption -->
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <!-- <link rel="stylesheet" href="style2.css"> -->
+  <script src="script.js" defer></script>
 </head>
 
 <body>
   <div class="container">
     <header>
-      <h1>ESP32 IoT Dashboard</h1>
+      <h1>Air-Wall Network Security Dashboard</h1>
       <div class="connection-status">
         <div id="statusIndicator" class="status-indicator"></div>
         <span id="statusText">Disconnected</span>
@@ -24,139 +25,208 @@
     </header>
 
     <div class="dashboard-grid">
-      <!-- Connection Card -->
-      <div class="card connection-card">
+
+      <div class="card connection-card" style="
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+  ">
         <div class="card-header">
           <h2 class="card-title">Connection</h2>
         </div>
         <div class="form-group">
-          <label for="wsUrl">WebSocket URL:</label>
-          <input type="text" id="wsUrl" class="form-control" placeholder="ws://192.168.94.240/ws" value="ws://">
+          <label for="wsUrl">Esp32 IP</label>
+          <input type="text" id="wsUrl" class="form-control" placeholder="192.168.x.x" value="192.168.94.240">
         </div>
         <div class="btn-group">
           <button id="connectBtn" class="btn btn-primary" onclick="connectWS()">Connect</button>
           <button id="disconnectBtn" class="btn btn-danger" onclick="disconnectWS()" disabled>Disconnect</button>
         </div>
+
+        <div style="height: 100%;display: flex;justify-content: space-evenly;align-items: center;margin: 30px 0;">
+          <button class="btn btn-danger" onclick="sendRebootCommand('led', 'on')" style="padding: 10px;font-size: larger;">🔄Reboot</button>
+        </div>
       </div>
 
-      <!-- Controls Card -->
+      <!-- System Info -->
+      <div class="metrics">
+        <div class="metric-card">
+          <h3><span class="icon">ℹ️</span>Network Info</h3>
+          <div id="netInfo"></div>
+          <br>
+          <h3><span class="icon">⏱️</span> Uptime</h3>
+          <p style="font-size: 1.2em; font-weight: bold" id="uptime"></p>
+        </div>
+        <div class="metric-card">
+          <h3><span class="icon">🖥️</span> System Info</h3>
+          <div id="chipInfo"></div>
+        </div>
+        <div class="metric-card">
+          <h3><span class="icon">🛜</span> Signal Strength</h3>
+          <div class="progress-bar">
+            <div class="progress-fill" id="signalStrength"></div>
+          </div>
+          <p id="signalInfo"></p>
+          <br>
+          <h3><span class="icon">💾</span> Memory Usage</h3>
+          <div class="memory-usage">
+            <div class="memory-item">
+              <p>Heap: --% (--/-- MB)</p>
+              <div class="progress-bar">
+                <div class="progress-fill" id="heap" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="memory-item">
+              <p>Free: --% (--/-- MB)</p>
+              <div class="progress-bar">
+                <div class="progress-fill" id="freeHeap" style="width: 25%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">SD Card Status</div>
+          <div id="sdStatus" class="metric-value">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Current Mode</div>
+          <div id="modeValue" class="metric-value">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Deauth Protection</div>
+          <div id="deauthStatus" class="metric-value">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">AES Encrypted</div>
+          <div id="aesStatus" class="metric-value">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Status</div>
+          <div id="aesStatus" class="metric-value">--</div>
+        </div>
+        <div class="metric-card">
+          <button class="btn btn-success" onclick="sendCommandViaHttp('led', 'on')">Turn LED On</button>
+          <button class="btn btn-warning" onclick="sendCommandViaHttp('led', 'off')">Turn LED Off</button>
+        </div>
+      </div>
+
+
+
+      <!-- <div class="card"> -->
+
+
+      <!-- <div class="card">
+        <h2><span class="icon">⚠️</span> Threat Detection</h2>
+        <span class="badge">Active</span>
+        <p>
+          <span class="status-indicator status-ok"></span>No threats detected in 24h
+        </p>
+        <div class="chart-container">
+          <canvas id="threatChart" style="height: 100%; width: auto; margin: auto;"></canvas>
+        </div>
+      </div> -->
+      <!-- <div class="card">
+        <h2><span class="icon">🛡️</span> Firewall Status</h2>
+        <span class="badge">Active</span>
+        <p>
+          <span class="status-indicator status-ok"></span>All systems operational
+        </p>
+        <svg viewBox="0 0 24 24" fill="none" style="width: 50%;margin-left: 25%;">
+          <path
+            d="M9 12L11 14L15 9.99999M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z"
+            stroke="#00DD33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div> -->
+      <!-- <div class="card">
+        <h2><span class="icon">🌐</span> Network Traffic</h2>
+        <div class="chart-container">
+          <canvas id="trafficChart"></canvas>
+        </div>
+      </div>
+      <div class="card" style="grid-column: 1 / -1">
+        <h2><span class="icon">💻</span> System Logs</h2>
+        <div class="terminal" id="serial_output">
+        </div>
+      </div> -->
+
+      <!-- Controls -->
       <div class="card controls-card">
         <div class="card-header">
-          <h2 class="card-title">Device Controls</h2>
+          <h2 class="card-title">System Controls</h2>
         </div>
         <div class="tabs">
-          <div class="tab active" data-tab="custom">Custom Command</div>
-          <div class="tab" data-tab="lights">Lights</div>
-          <div class="tab" data-tab="sensors">Sensors</div>
+          <div class="tab active" data-tab="command">Custom Command</div>
+          <!-- <div class="tab" data-tab="modes">Mode Switch</div> -->
         </div>
 
-        <div id="customTab" class="tab-content active">
+        <!-- Command Tab -->
+        <div id="commandTab" class="tab-content active">
           <div class="form-group">
-            <label for="message">JSON Command:</label>
-            <input type="text" id="message" class="form-control" value='{"cmd":"ping"}'>
+            <!-- <label for="message">System Commands:</label> -->
+            <!-- <input type="text" id="message" class="form-control" value='{"cmd":"ping"}'> -->
           </div>
           <div class="btn-group">
-            <button class="btn btn-success" onclick="sendEncrypted()">Send Encrypted</button>
-            <button class="btn btn-warning" onclick="callStatus()">/status</button>
-            <button class="btn btn-warning" onclick="callDecrypt()">/decrypt</button>
+            <button class="btn btn-success" onclick="sendPortScan()">Scan Ports</button>
+            <!-- <button class="btn btn-warning" onclick="callStatus()">/status</button>
+            <button class="btn btn-warning" onclick="callDecrypt()">/decrypt</button> -->
           </div>
         </div>
 
-        <div id="lightsTab" class="tab-content">
+        <!-- Mode Switch Tab -->
+        <!-- <div id="modesTab" class="tab-content">
           <div class="control-row">
-            <span>LED Control</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="ledToggle" onchange="toggleLED()">
-              <span class="toggle-slider"></span>
-            </label>
+            <label for="modeSelect">Select Mode:</label>
+            <select id="modeSelect" onchange="switchMode(this.value)">
+              <option value="Active">Active</option>
+              <option value="Passive">Passive</option>
+              <option value="Smart">Smart</option>
+            </select>
           </div>
-          <div class="control-row">
-            <span>Brightness: <span id="brightnessValue">50</span>%</span>
-          </div>
-          <div class="slider-container">
-            <input type="range" min="0" max="100" value="50" class="slider" id="brightnessSlider"
-              onchange="setBrightness(this.value)" oninput="updateBrightnessValue(this.value)">
-          </div>
-        </div>
+        </div> -->
+      </div>
 
-        <div id="sensorsTab" class="tab-content">
-          <div class="btn-group">
-            <button class="btn btn-primary" onclick="requestTemperature()">Request Temperature</button>
-            <button class="btn btn-primary" onclick="requestHumidity()">Request Humidity</button>
-            <button class="btn btn-primary" onclick="requestAllSensors()">Request All Sensors</button>
-          </div>
+      <!-- Connection -->
+
+      <!-- Charts -->
+      <!-- <div class="card chart-card">
+        <div class="card-header">
+          <h2 class="card-title">Deauth Attempts Over Time</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="deauthChart"></canvas>
+        </div>
+      </div> -->
+      <div class="card chart-card">
+        <div class="card-header">
+          <h2 class="card-title">Wi-Fi Traffic Activity</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="trafficChart"></canvas>
         </div>
       </div>
 
+      <!-- <div class="card chart-card">
+        <div class="card-header">
+          <h2 class="card-title">Mode Usage Distribution</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="modePieChart"></canvas>
+        </div>
+      </div> -->
+
+
+
+      <!-- Logs -->
       <div class="card log-card">
         <div class="card-header">
-          <h2 class="card-title">Message Log</h2>
+          <h2 class="card-title">Activity Log</h2>
           <button class="btn btn-danger" onclick="clearLog()">Clear</button>
         </div>
         <div id="log" class="log-container"></div>
       </div>
 
-      <!-- Metrics Row -->
-      <div class="metrics">
-        <div class="metric-card">
-          <div class="metric-label">Temperature</div>
-          <div id="temperatureValue" class="metric-value">--°C</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Humidity</div>
-          <div id="humidityValue" class="metric-value">--%</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Battery</div>
-          <div id="batteryValue" class="metric-value">--%</div>
-        </div>
-      </div>
-
-      <!-- Temperature Chart Card -->
-      <div class="card chart-card">
-        <div class="card-header">
-          <h2 class="card-title">Temperature History</h2>
-        </div>
-        <div class="chart-container">
-          <canvas id="temperatureChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Humidity Chart Card -->
-      <div class="card chart-card">
-        <div class="card-header">
-          <h2 class="card-title">Humidity History</h2>
-        </div>
-        <div class="chart-container">
-          <canvas id="humidityChart"></canvas>
-        </div>
-      </div>
-
-      <!-- System Status Card -->
-      <div class="card chart-card">
-        <div class="card-header">
-          <h2 class="card-title">System Status</h2>
-        </div>
-        <div class="chart-container">
-          <canvas id="statusPieChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Power Usage Card -->
-      <div class="card chart-card">
-        <div class="card-header">
-          <h2 class="card-title">Power Usage</h2>
-        </div>
-        <div class="chart-container">
-          <canvas id="powerChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Log Card -->
-
     </div>
   </div>
-
 </body>
 
 </html>
