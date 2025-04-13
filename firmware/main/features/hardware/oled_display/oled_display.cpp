@@ -110,7 +110,7 @@ void OLED_Display::displayScreen(int screen)
         display.setTextColor(SSD1306_WHITE);
         display.setCursor(0, 18);
         display.println("Screen 3");
-        display.println("This is the third screen.");
+        display.println("Open port: 80 ");
     }
     display.display();
     displayScreenIndicator();

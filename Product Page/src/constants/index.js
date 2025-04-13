@@ -54,25 +54,8 @@ export const navigation = [
   },
   {
     id: "3",
-    title: "Architecture",
-    url: "#roadmap",
-  },
-  {
-    id: "4",
     title: "docs",
-    url: "http://localhost:3000/",
-  },
-  {
-    id: "5",
-    title: "New account",
-    url: "#signup",
-    onlyMobile: true,
-  },
-  {
-    id: "6",
-    title: "Sign in",
-    url: "#login",
-    onlyMobile: true,
+    url: "https://air-wall-docs-vut8.vercel.app/",
   },
 ];
 
@@ -215,7 +198,7 @@ export const pricing = [
     id: "0",
     title: "Basic",
     description: "Essential cybersecurity tools to get started",
-    price: "700",
+    price: "1299",
     features: [
       "Network scanning and monitoring",
       "Wi-Fi analyzer and vulnerability detection",

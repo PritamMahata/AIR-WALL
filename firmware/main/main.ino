@@ -131,14 +131,13 @@ void startPassiveFeatures()
     if (!scanned)
     {
         display.addLog("Starting port scan...");   // Log port scan start
-        initPortScanner("192.168.94.121");      // Replace with your target IP
+        initPortScanner("192.168.43.61");      // Replace with your target IP
         scanned = true;
     }
 
     // Use non-blocking scan for risky ports
     scanRiskyPorts();  // Scan the specified risky ports
 
-    display.addLog("Passive mode running...");   // Log the status
     Serial.println("Passive mode running......");
 }
 

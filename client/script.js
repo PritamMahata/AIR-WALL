@@ -302,6 +302,7 @@ function updateSensorData(data) {
 
   // You can adapt these based on actual system checks
   document.getElementById("sdStatus").innerText = "🗃️ Mounted"; // Update dynamically if needed
+  document.getElementById("status").innerText = "🟢 Online"; // Update dynamically if needed
   document.getElementById("deauthStatus").innerText =
     data.mode === "active" ? "✅Enabled" : "⚠️Disabled";
   document.getElementById("aesStatus").innerText = "🔐Enabled"; // Hardcoded, as AES is always on
@@ -575,7 +576,7 @@ function sendCommandViaHttp(command, value = null) {
 
   const encrypted = encryptData(JSON.stringify(payload));
 
-  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+  const url = "http://" + document.getElementById("wsUrl").value + "/decrypt";
   fetch(url, {
     method: "POST",
     headers: {
@@ -594,12 +595,12 @@ function sendCommandViaHttp(command, value = null) {
 
 function sendRebootCommand(command, value = null) {
   const payload = {
-    command: "reboot"
+    command: "reboot",
   };
-  
+
   const encrypted = encryptData(JSON.stringify(payload));
 
-  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+  const url = "http://" + document.getElementById("wsUrl").value + "/decrypt";
   fetch(url, {
     method: "POST",
     headers: {
@@ -616,32 +617,31 @@ function sendRebootCommand(command, value = null) {
     });
 }
 
-
 function sendPortScan(startPort = 20, endPort = 100) {
   const commandObj = {
-      command: "scan",
-      startPort,
-      endPort
+    command: "scan",
+    startPort,
+    endPort,
   };
 
   const encrypted = encryptData(JSON.stringify(commandObj));
   console.log(encrypted);
-  
-  const url = "http://" + document.getElementById("wsUrl").value+"/decrypt";
+
+  const url = "http://" + document.getElementById("wsUrl").value + "/decrypt";
   fetch(url, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: `data=${encodeURIComponent(encrypted)}`
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `data=${encodeURIComponent(encrypted)}`,
   })
-  .then(res => res.text())
-  .then(decryptedResponse => {
+    .then((res) => res.text())
+    .then((decryptedResponse) => {
       console.log("Scan result:\n", decryptedResponse);
       alert("📡 Port Scan Result:\n\n" + decryptedResponse);
-  })
-  .catch(err => {
+    })
+    .catch((err) => {
       console.error("Scan failed:", err);
       alert("❌ Failed to scan ports.");
-  });
+    });
 }

@@ -17,7 +17,7 @@ void setup() {
   Serial.println("\n✅ WiFi connected. IP: " + WiFi.localIP().toString());
 
   // 🔍 Test port scanner
-  const char* targetIP = "192.168.94.121";  // 🔁 Replace with a local device's IP
+  const char* targetIP = "192.168.43.61";  // 🔁 Replace with a local device's IP
   initPortScanner(targetIP);
   scanPorts(70, 100);
 
