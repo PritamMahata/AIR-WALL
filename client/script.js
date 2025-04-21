@@ -305,6 +305,7 @@ function updateSensorData(data) {
   document.getElementById("deauthStatus").innerText =
     data.mode === "active" ? "✅Enabled" : "⚠️Disabled";
   document.getElementById("aesStatus").innerText = "🔐Enabled"; // Hardcoded, as AES is always on
+  document.getElementById("status").innerText = "🟢Online"; // Hardcoded, as AES is always on
 
   const ctx = document.getElementById("trafficChart").getContext("2d");
 

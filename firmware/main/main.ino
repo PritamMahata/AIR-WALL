@@ -46,7 +46,9 @@ void loop()
     }
 
     else if (currentMode == "passive")
+    {
         startPassiveFeatures();
+    }
     else if (currentMode == "smart")
     {
     }
@@ -104,7 +106,11 @@ void handleSwitchInput()
         else if (currentMode == "passive")
             currentMode = "smart";
         else
+        {
             currentMode = "active";
+            sd.writeMode(currentMode);
+            esp_restart();
+        }
         sd.writeMode(currentMode);
         display.setMode(currentMode);
         // display.displayMode(currentMode);
@@ -128,20 +134,18 @@ void startPassiveFeatures()
         sendSerialToWebClients();
     }
 
-    if (!scanned)
-    {
-        display.addLog("Starting port scan...");   // Log port scan start
-        initPortScanner("192.168.94.121");      // Replace with your target IP
-        scanned = true;
-    }
+    //this is port scanner code
+    // if (!scanned)
+    // {
+    //     display.addLog("Starting port scan..."); // Log port scan start
+    //     initPortScanner("192.168.94.121");       // Replace with your target IP
+    //     scanned = true;
+    // }
 
-    // Use non-blocking scan for risky ports
-    scanRiskyPorts();  // Scan the specified risky ports
-
-    display.addLog("Passive mode running...");   // Log the status
+    // // Use non-blocking scan for risky ports
+    // scanRiskyPorts(); // Scan the specified risky ports
     Serial.println("Passive mode running......");
 }
-
 
 void getSystemInfo()
 {
