@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
           <label for="wsUrl">Esp32 IP</label>
-          <input type="text" id="wsUrl" class="form-control" placeholder="192.168.x.x" value="192.168.94.240">
+          <input type="text" id="wsUrl" class="form-control" placeholder="192.168.x.x" value="">
         </div>
         <div class="btn-group">
           <button id="connectBtn" class="btn btn-primary" onclick="connectWS()">Connect</button>
@@ -44,7 +44,8 @@
         </div>
 
         <div style="height: 100%;display: flex;justify-content: space-evenly;align-items: center;margin: 30px 0;">
-          <button class="btn btn-danger" onclick="sendRebootCommand('led', 'on')" style="padding: 10px;font-size: larger;">🔄Reboot</button>
+          <button class="btn btn-danger" onclick="sendRebootCommand('led', 'on')"
+            style="padding: 10px;font-size: larger;">🔄Reboot</button>
         </div>
       </div>
 
@@ -162,18 +163,19 @@
         <!-- Command Tab -->
         <div id="commandTab" class="tab-content active">
           <div class="form-group">
-            <!-- <label for="message">System Commands:</label> -->
-            <!-- <input type="text" id="message" class="form-control" value='{"cmd":"ping"}'> -->
+            <label for="message">System Commands:</label>
+            <input type="text" id="message" class="form-control" value='192.168.61.43' placeholder="Enter command" />
           </div>
           <div class="btn-group">
             <button class="btn btn-success" onclick="sendPortScan()">Scan Ports</button>
-            <!-- <button class="btn btn-warning" onclick="callStatus()">/status</button>
-            <button class="btn btn-warning" onclick="callDecrypt()">/decrypt</button> -->
+            <button class="btn btn-warning" onclick="callStatus()">/status</button>
+            <button class="btn btn-warning" onclick="callDecrypt()">/decrypt</button>
           </div>
         </div>
+      </div>
 
-        <!-- Mode Switch Tab -->
-        <!-- <div id="modesTab" class="tab-content">
+      <!-- Mode Switch Tab -->
+      <!-- <div id="modesTab" class="tab-content">
           <div class="control-row">
             <label for="modeSelect">Select Mode:</label>
             <select id="modeSelect" onchange="switchMode(this.value)">
@@ -183,12 +185,12 @@
             </select>
           </div>
         </div> -->
-      </div>
+    </div>
 
-      <!-- Connection -->
+    <!-- Connection -->
 
-      <!-- Charts -->
-      <!-- <div class="card chart-card">
+    <!-- Charts -->
+    <!-- <div class="card chart-card">
         <div class="card-header">
           <h2 class="card-title">Deauth Attempts Over Time</h2>
         </div>
@@ -196,16 +198,16 @@
           <canvas id="deauthChart"></canvas>
         </div>
       </div> -->
-      <div class="card chart-card">
-        <div class="card-header">
-          <h2 class="card-title">Wi-Fi Traffic Activity</h2>
-        </div>
-        <div class="chart-container">
-          <canvas id="trafficChart"></canvas>
-        </div>
+    <div class="card chart-card">
+      <div class="card-header">
+        <h2 class="card-title">Wi-Fi Traffic Activity</h2>
       </div>
+      <div class="chart-container">
+        <canvas id="trafficChart"></canvas>
+      </div>
+    </div>
 
-      <!-- <div class="card chart-card">
+    <!-- <div class="card chart-card">
         <div class="card-header">
           <h2 class="card-title">Mode Usage Distribution</h2>
         </div>
@@ -216,16 +218,16 @@
 
 
 
-      <!-- Logs -->
-      <div class="card log-card">
-        <div class="card-header">
-          <h2 class="card-title">Activity Log</h2>
-          <button class="btn btn-danger" onclick="clearLog()">Clear</button>
-        </div>
-        <div id="log" class="log-container"></div>
+    <!-- Logs -->
+    <div class="card log-card">
+      <div class="card-header">
+        <h2 class="card-title">Activity Log</h2>
+        <button class="btn btn-danger" onclick="clearLog()">Clear</button>
       </div>
-
+      <div id="log" class="log-container"></div>
     </div>
+
+  </div>
   </div>
 </body>
 

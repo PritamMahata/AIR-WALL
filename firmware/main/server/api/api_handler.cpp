@@ -91,7 +91,7 @@ void setupAPI(AsyncWebServer &server)
                     Serial.println("Scanning from IP: " + clientIP);
                 
                     // Replace with the actual target IP or a dynamic IP
-                    const char* targetIP = "192.168.94.121";  // 🔁 Replace with a local device's IP
+                    const char* targetIP = "192.168.43.61";  // 🔁 Replace with a local device's IP
                 
                     // Initialize port scanner with the target IP
                     initPortScanner(targetIP);
