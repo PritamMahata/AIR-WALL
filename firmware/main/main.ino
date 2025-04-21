@@ -134,7 +134,6 @@ void startPassiveFeatures()
         sendSerialToWebClients();
     }
 
-<<<<<<< HEAD
     //this is port scanner code
     // if (!scanned)
     // {
@@ -145,18 +144,6 @@ void startPassiveFeatures()
 
     // // Use non-blocking scan for risky ports
     // scanRiskyPorts(); // Scan the specified risky ports
-=======
-    if (!scanned)
-    {
-        display.addLog("Starting port scan...");   // Log port scan start
-        initPortScanner("192.168.43.61");      // Replace with your target IP
-        scanned = true;
-    }
-
-    // Use non-blocking scan for risky ports
-    scanRiskyPorts();  // Scan the specified risky ports
-
->>>>>>> 45d528e713ebcbb4631c65c94a1f03363f35394a
     Serial.println("Passive mode running......");
 }
 
